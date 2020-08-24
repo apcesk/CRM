@@ -1,0 +1,18 @@
+{
+  "name": "crm-web",
+  "version": "1.0.0",
+  "description": "crm-web",
+  "main": "index.js",
+  "scripts": {
+    "test": "dev"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.11.0",
+    "antd": "^4.6.0",
+    "axios": "^0.20.0",
+    "javascript-time-ago": "^2.0.13",
+    "next": "^9.5.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
