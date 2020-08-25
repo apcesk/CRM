@@ -36,9 +36,12 @@ create table `Customer`(
 insert into `Employee` (`eid`, `name`, `password`, `power`, `position`, `count_client`) 
 values 
     (1, 'apcesk', '123456', 1, '测试', 0);
+insert into `Employee` (`eid`, `name`, `password`, `power`, `position`, `count_client`) 
+values 
+    (null, 'zhang', '123456', 0, '测试', 0);
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (1, '张三', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, CURRENT_TIMESTAMP);
+    (1, '张三', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, , CURRENT_TIMESTAMP);
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
     (null, '李四', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, CURRENT_TIMESTAMP);
@@ -48,3 +51,15 @@ values
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
     (null, '赵六', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, CURRENT_TIMESTAMP);
+insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
+values
+    (null, '张', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, CURRENT_TIMESTAMP);
+insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
+values
+    (null, '李', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, CURRENT_TIMESTAMP);
+insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
+values
+    (null, '王', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, CURRENT_TIMESTAMP);
+insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
+values
+    (null, '赵', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, CURRENT_TIMESTAMP);
