@@ -31,6 +31,9 @@ const ResponseService = {
             case 10:
                 message = '登录失效' + errMsg;
                 break;
+            case 99:
+                message = errMsg;
+                break;
             default:
                 message = '未知错误';
                 break;

@@ -4,7 +4,7 @@ const Tools = {
         const tokenString = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         let result = '';
         for (let i = length;i > 0;i--) {
-            result += tokenString[Math.floor(Math.random() * chars.length)];
+            result += tokenString[Math.floor(Math.random() * tokenString.length)];
         }
         return result;
     }

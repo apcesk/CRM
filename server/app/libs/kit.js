@@ -4,7 +4,7 @@ class Kit {
     static getPage(ctx) {
         const pager = {
             page: parseInt(ctx.query.page, 10) || 0,
-            pagesize: parseInt(ctx.query,pagesize, 10) || 15,
+            pagesize: parseInt(ctx.query.pagesize, 10) || 15,
         };
         return pager;
     }
@@ -26,3 +26,5 @@ class Kit {
         }
     }
 }
+
+module.exports = Kit;
