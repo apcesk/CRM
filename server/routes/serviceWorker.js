@@ -6,6 +6,7 @@ const ServiceWorkerRouter = {
     name: '/service',
     routes: [
         {methods: 'post', path:'/login', realize: SWC.login}, // 客服人员的登录
+        {methods: 'get', path:'/getMyCustomer', realize: SWC.getMyCustomer}, // 客服人员的登录
     ]
 }
 
