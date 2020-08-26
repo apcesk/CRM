@@ -22,12 +22,12 @@ create table `Customer`(
     `name` varchar(16) not null, #客户姓名
     `wechat` varchar(20) not null, #微信号
     `phone_number` varchar(13) not null, #手机号
-    `last_review_date` timestamp default null, #上次回访日期,null表示未回访
+    `last_review_date` varchar(20) default null, #上次回访日期,null表示未回访
     `remarks` text default null, #备注
     `address` varchar(50) default null, #地址
     `state` int default 0, #跟进状态，用0，1，2表示，0表示未跟进，1跟进中，2跟进截止
     `service_id` int default 0, #当前客户属于哪个客服
-    `date_first_reg` timestamp null default CURRENT_TIMESTAMP, #首次添加用户的日期
+    `date_first_reg` varchar(20) null, #首次添加用户的日期
     `other_1` varchar(255) default null, #留空备用
     `other_2` varchar(255) default null, #留空备用
     `other_3` varchar(255) default null, #留空备用
@@ -41,25 +41,25 @@ values
     (null, 'zhang', '123456', 0, '测试', 0);
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (1, '张三', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, , CURRENT_TIMESTAMP);
+    (null, '张三', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, null);
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '李四', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, CURRENT_TIMESTAMP);
+    (null, '李四', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, null);
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '王五', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, CURRENT_TIMESTAMP);
+    (null, '王五', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, null);
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '赵六', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, CURRENT_TIMESTAMP);
+    (null, '赵六', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, null);
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '张', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, CURRENT_TIMESTAMP);
+    (null, '张', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, null);
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '李', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, CURRENT_TIMESTAMP);
+    (null, '李', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, null);
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '王', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, CURRENT_TIMESTAMP);
+    (null, '王', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, null);
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '赵', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, CURRENT_TIMESTAMP);
+    (null, '赵', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, null);
