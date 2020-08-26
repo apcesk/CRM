@@ -4,13 +4,17 @@
   "description": "crm-web",
   "main": "index.js",
   "scripts": {
-    "test": "dev"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "jest"
   },
   "dependencies": {
     "@babel/preset-env": "^7.11.0",
     "antd": "^4.6.0",
     "axios": "^0.20.0",
     "javascript-time-ago": "^2.0.13",
+    "moment": "^2.27.0",
     "next": "^9.5.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
