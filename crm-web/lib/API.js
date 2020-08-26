@@ -23,6 +23,18 @@ class API {
         console.log(query);
         return REST.get(`service/getMyCustomer${query}`);
     }
+
+    // 添加新的客户
+    static addCustomer(req){
+        console.log(req);
+        return REST.post('service/addCustomer', req);
+    }
+
+    // 通过id获取用户
+    static getCustomerById(req){
+        console.log(req);
+        return REST.get(`service/getCustomerById?cid=${req}`);
+    }
 }
 
 export default API;

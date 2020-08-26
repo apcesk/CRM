@@ -9,8 +9,9 @@ class REST {
 
         try {
             res = await axios.get(url);
+            // console.log(res);
             if (res.data.code !== 0) {
-                return "出错了";
+                return res.data;
             }
             return res;
         } catch(e) {
@@ -19,19 +20,19 @@ class REST {
     }
 
     static async post(url, req) {
-        console.log('发送了post请求')
+        // console.log('发送了post请求')
         let res;
         const axios = Axios.init();
         try {
             res = await axios.post(url, req);
-            console.log('Rest -> post -> res: ', res);
+            // console.log('Rest -> post -> res: ', res);
             if (res.data.code !== 0) {
                 return '出错了'
             }
             
             return res;
         } catch (e) {
-            console.log('Rest -> post -> 报错: ', e);
+            // console.log('Rest -> post -> 报错: ', e);
             return e;
         }
     }
