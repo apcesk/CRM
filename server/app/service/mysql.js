@@ -17,6 +17,7 @@ const query = (_sql, sqlParams, params) => {
     return new Promise((resolve, reject) => {
         // 使用数据库进行查询，将查询的结果返回出去
         pool.query(sql, params, (err, result) => {
+            // console.log("mysql->query: ", result)
             if (err) reject(err)
             resolve(result);
         })

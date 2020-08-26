@@ -39,18 +39,57 @@ const ServiceWorkerController = {
         }
     },
     getMyCustomer: async (ctx) => {
-        console.log("controller: \n",ctx)
+        // console.log("controller: \n",ctx)
         // 获取分页查询的数据
         const pager = Kit.getPage(ctx);
 
         // 保存关键字
         const kw = ctx.query.kw || '';
         const id = ctx.query.id;
-        let result = await SWS.getMyCustomer(pager.page, pager.pagesize, id);
+        let obj = {
+            page: pager.page,
+            pagesize: pager.pagesize,
+            id: id,
+            kw: kw
+        }
+        let result = await SWS.getMyCustomer(obj);
+        // console.log(result);
         if (result) {
             R.success(result, ctx);
         } else {
             R.error(99, '系统错误', ctx);
+        }
+    },
+    // 添加新的客户
+    addCustomer: async (ctx) => {
+        let {name, wechat, phone_number, last_review_date, address, service_id, remarks} = ctx.request.body;
+        // console.log(ctx.request.body);
+        let obj = {
+            name:name, 
+            wechat:wechat, 
+            phone_number:phone_number, 
+            last_review_date:last_review_date, 
+            address:address, 
+            service_id:service_id, 
+            remarks:remarks
+        };
+        // console.log("controller: -> ", obj)
+        let result = await SWS.addCustomer(obj);
+        if (result) {
+            R.success(result, ctx);
+        } else {
+            R.error(99, '添加失败啦！',ctx);
+        }
+        
+    },
+    // 通过id获取用户信息
+    getCustomerById: async (ctx) => {
+        const cid = ctx.query.cid;
+        let result = await SWS.getCustomerById(cid);
+        if (result) {
+            R.success(result, ctx);
+        } else {
+            R.error(99, '查无此人?', ctx);
         }
     }
 }
