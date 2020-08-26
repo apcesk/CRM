@@ -19,7 +19,7 @@ const NormalLoginForm = () => {
         User.saveToken(data.token);
         User.saveLoginType(data.login_type);
         User.saveLoginId(data.info.id);
-        Router.push('/index');
+        Router.push('/index/mycustomer');
       } else {
         alert('登录失败');
       }
