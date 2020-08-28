@@ -2,7 +2,7 @@
 const Router = require('koa-router');
 const Config = require('../config');
 const ServiceRouter = require('./serviceWorker');
-
+const EmployeeRouter = require('./employee');
 const Routes = new Router({
     prefix: Config.prefix
 });
@@ -10,6 +10,10 @@ const Routes = new Router({
 // 客服人员路由挂载
 ServiceRouter.routes.forEach(e => {
     Routes[e.methods](ServiceRouter.name + e.path, e.realize);
+});
+// 工作人员路由挂载
+EmployeeRouter.routes.forEach(e => {
+    Routes[e.methods](EmployeeRouter.name + e.path, e.realize);
 });
 
 // Routes.get('/test', async (ctx, res) => {

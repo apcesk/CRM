@@ -46,11 +46,13 @@ const ServiceWorkerController = {
         // 保存关键字
         const kw = ctx.query.kw || '';
         const id = ctx.query.id;
+        const loginType = ctx.query.loginType;
         let obj = {
             page: pager.page,
             pagesize: pager.pagesize,
             id: id,
-            kw: kw
+            kw: kw,
+            loginType: loginType
         }
         let result = await SWS.getMyCustomer(obj);
         // console.log(result);
@@ -60,10 +62,9 @@ const ServiceWorkerController = {
             R.error(99, '系统错误', ctx);
         }
     },
-    // 添加新的客户
+    // 添加新的客户/ 修改客户
     addCustomer: async (ctx) => {
-        let {name, wechat, phone_number, last_review_date, address, service_id, remarks} = ctx.request.body;
-        // console.log(ctx.request.body);
+        let {name, wechat, phone_number, last_review_date, address, service_id, remarks, cid, date_first_reg} = ctx.request.body;
         let obj = {
             name:name, 
             wechat:wechat, 
@@ -71,9 +72,10 @@ const ServiceWorkerController = {
             last_review_date:last_review_date, 
             address:address, 
             service_id:service_id, 
-            remarks:remarks
+            remarks:remarks,
+            cid: cid,
+            date_first_reg: date_first_reg
         };
-        // console.log("controller: -> ", obj)
         let result = await SWS.addCustomer(obj);
         if (result) {
             R.success(result, ctx);
@@ -85,11 +87,41 @@ const ServiceWorkerController = {
     // 通过id获取用户信息
     getCustomerById: async (ctx) => {
         const cid = ctx.query.cid;
+        console.log('cid: ',cid);
         let result = await SWS.getCustomerById(cid);
         if (result) {
             R.success(result, ctx);
         } else {
             R.error(99, '查无此人?', ctx);
+        }
+    },
+    // 通过id删除客户
+    deleteCustomerById: async (ctx) => {
+        const cid = ctx.request.body.cid;
+        let result = await SWS.deleteCustomerById(cid);
+        if (result) {
+            R.success(result, ctx);
+        } else {
+            R.error(99, '删除失败啦！', ctx);
+        }
+    },
+    getCustomerRelationShipeById: async (ctx) => {
+        const cid = ctx.query.cid;
+        let result = await SWS.getCustomerRelationShipeById(cid);
+        if (result) {
+            R.success(result, ctx);
+        } else {
+            R.error(99, '未知错误', ctx);
+        }
+    },
+    getCustomerByName: async (ctx) => {
+        const {name} = ctx.query;
+        // console.log(name)
+        let result = await SWS.getCustomerByName(name);
+        if (result) {
+            R.success(result, ctx);
+        } else {
+            R.error(99, '查无此人', ctx);
         }
     }
 }

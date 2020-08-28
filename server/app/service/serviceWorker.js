@@ -9,8 +9,8 @@ const ServiceWorkerService = {
         // console.log(data);
         return data && data.length ? data[0] : false;
     },
-    getMyCustomer: async ({page, pagesize, id, kw}) => {
-        const data = await ServiceWorkerModel.getMyCustomer({page, pagesize, id, kw});
+    getMyCustomer: async ({page, pagesize, id, kw, loginType}) => {
+        const data = await ServiceWorkerModel.getMyCustomer({page, pagesize, id, kw, loginType});
         return data;
     },
     addCustomer: async(obj) => {
@@ -19,6 +19,18 @@ const ServiceWorkerService = {
     },
     getCustomerById: async(cid) => {
         const data = await ServiceWorkerModel.getCustomerById(cid);
+        return data;
+    },
+    deleteCustomerById: async(cid) => {
+        const data = await ServiceWorkerModel.deleteCustomerById(cid);
+        return data;
+    },
+    getCustomerRelationShipeById: async (cid) => {
+        const data = await ServiceWorkerModel.getCustomerRelationShipeById(cid);
+        return data;
+    },
+    getCustomerByName: async (name) => {
+        const data = await ServiceWorkerModel.getCustomerByName(name);
         return data;
     }
 }
