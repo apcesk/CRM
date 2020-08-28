@@ -35,14 +35,26 @@ function EditCustomer() {
   // 添加新客户
   const onFinish = async (values) => {
     values.date_first_reg = values.date_first_reg.format('YYYY-MM-DD');
+    values.last_review_date = values.last_review_date.format('YYYY-MM-DD');
     const userId = User.getLoginId();
     values.service_id = parseInt(userId);
-    // console.log(values);
+    // 将修改的客户id传过去
+    if (query.includes('?') && query.includes('id')){
+      // 从query中获取到id值
+      // console.log('query: ', query);
+      let cid = query.split('/')[2].split('=')[1];
+      values.cid = cid;
+    }
+    console.log(values);
     // 将表单数据添加到数据库
     API.addCustomer(values).then((res) => {
-      // console.log(res);
-      if(res.data.code === 0) {
-        alert('添加成功');
+      console.log(res.data.datas);
+      if(res.data.datas.code === 99) {
+        alert(res.data.datas.message);
+        
+      } else {
+        // 操作成功
+        alert('操作成功')
         form.setFieldsValue({});
       }
     }).catch((e) => {
@@ -59,17 +71,19 @@ function EditCustomer() {
       API.getCustomerById(cid).then((res) => {
         // console.log(res);
         const customer = res.data.datas[0];
-        const { name, wechat, phone_number, address, date_first_reg, remarks} = customer;
-        console.log(date_first_reg);
+        const { name, wechat, phone_number, address, date_first_reg, remarks, last_review_date} = customer;
+        // console.log(date_first_reg);
         let date_first_reg1 = moment(date_first_reg);
-        console.log(date_first_reg1);
+        let last_review_date1 = moment(last_review_date);
+        // console.log(date_first_reg1);
         form.setFieldsValue({
           name,
           wechat,
           phone_number,
           address,
           date_first_reg: date_first_reg1,
-          remarks
+          remarks,
+          last_review_date: last_review_date1
         })
       }).catch(e => {
         alert(e);
@@ -136,7 +150,12 @@ function EditCustomer() {
             </Form.Item>
             {/* 创建日期 */}
             <Form.Item name={'date_first_reg'} label="注册日期">
-              <DatePicker placeholder={"首次添加日期请选择今日"} onChange={e=>{console.log(e)}}
+              <DatePicker placeholder={"首次添加日期请选择今日"}
+                disabledDate={disabledDate}
+              />
+            </Form.Item>
+            <Form.Item name={'last_review_date'} label="上次回访">
+              <DatePicker placeholder={"上次回访日期"}
                 disabledDate={disabledDate}
               />
             </Form.Item>
