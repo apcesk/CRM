@@ -26,8 +26,8 @@ class REST {
         try {
             res = await axios.post(url, req);
             // console.log('Rest -> post -> res: ', res);
-            if (res.data.code !== 0) {
-                return '出错了'
+            if (res.data.code == 10) {
+                Router.push('/index/mycustomer');
             }
             
             return res;
