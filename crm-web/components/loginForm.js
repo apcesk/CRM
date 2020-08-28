@@ -9,12 +9,12 @@ const { Title } = Typography;
 const NormalLoginForm = () => {
   // 发送请求
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+    // console.log('Received values of form: ', values);
     let data;
     API.login(values).then((res) => {
 
       data = res.data && res.data.datas;
-      console.log(data);
+      // console.log(data);
       if (data && data.code === 0) {
         User.saveToken(data.token);
         User.saveLoginType(data.login_type);
