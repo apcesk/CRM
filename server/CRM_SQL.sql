@@ -41,7 +41,7 @@ values
     (null, 'zhang', '123456', 0, '测试', 0);
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '张三', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, null);
+    (null, '拉拉', '1234567', '13745674567', '2020', '这是备注', '中华街23号', 1, 2, '2020');
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
     (null, '李四', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, null);
