@@ -4,8 +4,10 @@ import Appbreadcrumb from './appbreadcrumb';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import {useRouter} from 'next/router';
+import User from '../../lib/user';
 function MainLayout(props) {
   //
+  const [ADD_CAN_VISIBLE, SET_ADD_CAN_VISIBLE] = useState(false);
   const { SubMenu } = Menu;
   const { Header, Content, Footer, Sider } = Layout;
   const [openKeys, setOpenKeys] = useState(['index']);
@@ -14,15 +16,20 @@ function MainLayout(props) {
   const path = router.pathname;
   const asPath = router.asPath;
   const [AddOrEdit, setAddOrEdit] = useState('添加')
+  const [AddOrEditEmployee, setAddOrEditEmployee] = useState('添加');
   const onOpenChange = (openKeys) => {
     setOpenKeys(openKeys);
   }
   useEffect(() => {
+    SET_ADD_CAN_VISIBLE(User.getLoginType() == 1)
     const OPEN_KEY = path.split('/')[1];
     const SELECT_KEY = path.split('/')[2];
+    console.log(SELECT_KEY);
     setOpenKeys(OPEN_KEY)
     setSelectKeys(SELECT_KEY);
     setAddOrEdit(asPath.includes('add?id=') ? "编辑" : '添加');
+    setAddOrEditEmployee((asPath.includes('employee?id=')) ? "编辑" : '添加');
+
   }, [])
   return (
     <Layout style={{height: '100vh'}}>
@@ -43,8 +50,9 @@ function MainLayout(props) {
             >
               <SubMenu key="index" icon={<UserOutlined />} title="客户管理">
                 <Menu.Item key="mycustomer"><Link href="/index/mycustomer"><a>我的客户</a></Link></Menu.Item>
-                <Menu.Item key="add"><Link href="/index/add"><a>{AddOrEdit}客户</a></Link></Menu.Item>
-                <Menu.Item key="change"><Link href="/index/change"><a>修改关系</a></Link></Menu.Item>
+                <Menu.Item key="add" style={!ADD_CAN_VISIBLE ? {display:'none'} : {}}><Link href="/index/add"><a>{AddOrEdit}客户</a></Link></Menu.Item>
+                <Menu.Item key="employee" style={!ADD_CAN_VISIBLE ? {display:'none'} : {}}><Link href="/index/employee"><a>{AddOrEditEmployee}职员</a></Link></Menu.Item>
+                <Menu.Item key="empList" style={!ADD_CAN_VISIBLE ? {display:'none'} : {}}><Link href="/index/empList"><a>职员列表</a></Link></Menu.Item>
               </SubMenu>
             </Menu>
           </Sider>
