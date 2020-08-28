@@ -42,7 +42,7 @@ const ResponseService = {
             code: errType,
             error: true,
             test: 'test',
-            message
+            message: message
         }
     }
 }

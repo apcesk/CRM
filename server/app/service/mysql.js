@@ -14,6 +14,7 @@ const query = (_sql, sqlParams, params) => {
     _sql = _sql.replace(/\n/gi, ' ');
     _sql = _sql.replace(/\s\s/gi, ' ');
     sql = mysql.format(_sql, sqlParams);
+    // console.log('sql 操作');
     return new Promise((resolve, reject) => {
         // 使用数据库进行查询，将查询的结果返回出去
         pool.query(sql, params, (err, result) => {
