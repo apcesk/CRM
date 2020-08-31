@@ -24,7 +24,6 @@ function MainLayout(props) {
     SET_ADD_CAN_VISIBLE(User.getLoginType() == 1)
     const OPEN_KEY = path.split('/')[1];
     const SELECT_KEY = path.split('/')[2];
-    console.log(SELECT_KEY);
     setOpenKeys(OPEN_KEY)
     setSelectKeys(SELECT_KEY);
     setAddOrEdit(asPath.includes('add?id=') ? "编辑" : '添加');
@@ -50,7 +49,7 @@ function MainLayout(props) {
             >
               <SubMenu key="index" icon={<UserOutlined />} title="客户管理">
                 <Menu.Item key="mycustomer"><Link href="/index/mycustomer"><a>我的客户</a></Link></Menu.Item>
-                <Menu.Item key="add" style={!ADD_CAN_VISIBLE ? {display:'none'} : {}}><Link href="/index/add"><a>{AddOrEdit}客户</a></Link></Menu.Item>
+                <Menu.Item key="add"><Link href="/index/add"><a>{AddOrEdit}客户</a></Link></Menu.Item>
                 <Menu.Item key="employee" style={!ADD_CAN_VISIBLE ? {display:'none'} : {}}><Link href="/index/employee"><a>{AddOrEditEmployee}职员</a></Link></Menu.Item>
                 <Menu.Item key="empList" style={!ADD_CAN_VISIBLE ? {display:'none'} : {}}><Link href="/index/empList"><a>职员列表</a></Link></Menu.Item>
               </SubMenu>

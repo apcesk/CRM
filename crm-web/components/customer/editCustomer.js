@@ -1,6 +1,6 @@
 import { Form, Input, Button, DatePicker } from 'antd';
 import User from '../../lib/user';
-import { useRouter } from 'next/router';
+import { useRouter, Router } from 'next/router';
 import { useEffect, useState } from 'react';
 import API from '../../lib/API';
 import moment from 'moment';
@@ -32,6 +32,7 @@ function EditCustomer() {
   const query = router.asPath;
   // const path = router.pathname;
   const [form] = Form.useForm();
+  const [canChangeRegTime, setCanChangeRegTime] = useState(false);
   // 添加新客户
   const onFinish = async (values) => {
     values.date_first_reg = values.date_first_reg.format('YYYY-MM-DD');
@@ -50,12 +51,13 @@ function EditCustomer() {
     API.addCustomer(values).then((res) => {
       console.log(res.data.datas);
       if(res.data.datas.code === 99) {
-        alert(res.data.datas.message);
-        
+        alert(res.data.datas.message); 
       } else {
         // 操作成功
         alert('操作成功')
-        form.setFieldsValue({});
+        // form.setFieldsValue({});
+        form.resetFields();
+        // Router.push('/index/mycustomer');
       }
     }).catch((e) => {
       alert(e);
@@ -63,6 +65,8 @@ function EditCustomer() {
   };
   // 编辑客户
   useEffect(() => {
+    setCanChangeRegTime(User.getLoginType() == 1)
+    // console.log(moment(new Date()).format('YYYY-MM-DD'))
     if (query.includes('?') && query.includes('id')){
       // 从query中获取到id值
       // console.log('query: ', query);
@@ -87,6 +91,10 @@ function EditCustomer() {
         })
       }).catch(e => {
         alert(e);
+      })
+    } else {
+      form.setFieldsValue({
+        date_first_reg: moment(new Date())
       })
     }
   }, []);
@@ -150,13 +158,16 @@ function EditCustomer() {
             </Form.Item>
             {/* 创建日期 */}
             <Form.Item name={'date_first_reg'} label="注册日期">
-              <DatePicker placeholder={"首次添加日期请选择今日"}
+              <DatePicker 
+                placeholder={"首次添加日期请选择今日"}
                 disabledDate={disabledDate}
+                disabled={!canChangeRegTime}
               />
             </Form.Item>
             <Form.Item name={'last_review_date'} label="上次回访">
               <DatePicker placeholder={"上次回访日期"}
                 disabledDate={disabledDate}
+                
               />
             </Form.Item>
             {/* 备注 */}

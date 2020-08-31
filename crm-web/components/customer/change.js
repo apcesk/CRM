@@ -50,11 +50,8 @@ function EditCustomer() {
   };
   // 通过id查询客户关系
   const fetchRelationShipData = () => {
-    
-    // console.log(query);
     let cid = parseInt(query.split('/')[2].split('=')[1]);
     
-    // console.log(query.split('/')[2].split('=')[1]);
     // 通过cid获取客户的name
     API.getCustomerRelationShipeById(cid).then((res) => {
         // console.log(res);
@@ -91,12 +88,13 @@ function EditCustomer() {
   // 获取客服列表
   const getEmployeeList = () => {
       API.getEmployeeList().then((res) => {
-          console.log(res)
+          // console.log(res)
           let data = res.data.datas;
+          console.log(data);
           let tmpEmployee = [];
           if (res.data && res.data.code === 0) {
             data.forEach(e => {
-              tmpEmployee.push({'label': e.ename, 'value': e.eid});
+              tmpEmployee.push({'label': e.name, 'value': e.key});
             });
           };
           console.log(tmpEmployee);
