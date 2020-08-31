@@ -24,6 +24,10 @@ const EmployeeService = {
     deleteEmployeeById: async (id) => {
         const data = await EMP.deleteEmployeeById(id);
         return data;
+    },
+    getCustomersByEmployeeName: async(obj) => {
+        const data = await EMP.getCustomersByEmployeeName(obj);
+        return data;
     }
 }
 

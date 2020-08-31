@@ -42,7 +42,7 @@ const ServiceWorkerModel = {
         const tmp = await query(_sql, inserts);
         const LEN = tmp.length;
         // console.log("LEN: ", LEN);
-        _sql+= ' limit ?,?';
+        _sql+= ' order by cid desc limit ?,?';
         inserts = [...inserts, page*pagesize, pagesize];;
         
         // console.log('inserts: \n', inserts);

@@ -39,7 +39,6 @@ const ServiceWorkerController = {
         }
     },
     getMyCustomer: async (ctx) => {
-        // console.log("controller: \n",ctx)
         // 获取分页查询的数据
         const pager = Kit.getPage(ctx);
 

@@ -79,7 +79,24 @@ const EmployeeController = {
         } else {
             R.error(99, '删除失败', ctx);
         }
-    }
+    },
+    getCustomersByEmployeeName: async (ctx) => {
+        // 获取分页查询的数据
+        const pager = Kit.getPage(ctx);
+        // 保存name值
+        const name = ctx.query.employeeName;
+        let obj = {
+            page: pager.page,
+            pagesize: pager.pagesize,
+            name: name
+        }
+        let result = await EMP.getCustomersByEmployeeName(obj);
+        if (result) {
+            R.success(result, ctx);
+        } else {
+            R.error(99, '系统错误', ctx);
+        }
+    },
 }
 
 module.exports = EmployeeController;

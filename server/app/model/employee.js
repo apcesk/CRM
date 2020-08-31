@@ -76,6 +76,38 @@ const EmployeeModel = {
         let _sql = `delete from Employee where eid = ?`;
         let inserts = [id];
         return await query(_sql, inserts);
+    },
+    getCustomersByEmployeeName: async (obj) => {
+        // console.log(obj)
+        const page = obj.page;
+        const pagesize = obj.pagesize;
+        const name = obj.name
+        // console.log(obj);
+        // 先去查询employee name 的 eid值
+        let _sql = `select eid from Employee where name = '${name}'`;
+        let eid = await query(_sql);
+        // console.log(eid);
+        eid = eid[0] && eid[0]['eid'];
+        if (eid) {
+            _sql = `select c.cid as 'key', c.name, c.wechat, c.phone_number as phone, c.date_first_reg, c.remarks, c.address, c.last_review_date
+                        from Customer c where c.service_id = ?`;
+            let inserts = [eid];
+            const tmp = await query(_sql, inserts);
+            const LEN = tmp.length;
+            _sql+= ' order by cid desc limit ?,?';
+            inserts = [...inserts, page*pagesize, pagesize];
+            const list = await query(_sql, inserts);
+            let pager = {
+                page: page,
+                pagesize: pagesize,
+                rowcount: LEN,
+                pagecount: Math.ceil(LEN / pagesize)
+            }
+            console.log(pager);
+            return {list, pager};
+        } else {
+            return {error: true, msg:'查无此人'}
+        }
     }
 }
 
