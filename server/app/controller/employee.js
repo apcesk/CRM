@@ -7,7 +7,6 @@ const EmployeeController = {
         let obj;
         if (ctx) {
             const pager = Kit.getPage(ctx);
-
             // 保存关键字
             const kw = ctx.query.kw || '';
             const id = ctx.query.id;
@@ -28,7 +27,6 @@ const EmployeeController = {
         }
     },
     changeRelationship: async (ctx) => {
-        // console.log(ctx.request.body)
         const {cid, eid} = ctx.request.body;
         let result = await EMP.changeRelationship({cid, eid});
         if (result) {
@@ -44,12 +42,9 @@ const EmployeeController = {
             password: password,
             power: power
         };
-        console.log(obj);
         // 查重复
         let exists = await EMP.existsEmployee(ename);
-        console.log(exists.length);
         if (exists.length === 0) {
-            console.log('新职员')
             let result = await EMP.addEmployee(obj);
             if (result) {
                 R.success(result, ctx);
@@ -57,7 +52,6 @@ const EmployeeController = {
                 R.error(99, '添加失败', ctx);
             }
         } else {
-            // console.log('已经存在的职员')
             R.error(99, '用户名已存在，请修改!', ctx);
         }
         

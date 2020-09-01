@@ -9,13 +9,11 @@ const ServiceWorkerController = {
         let name = ctx.request.body.username;
         // 获取密码
         let password = ctx.request.body.password;
-        // console.log('name: ', name, '\npassword: ', password)
         // 检查是否正确的输入了name 和 password
         if (!name) return R.error(2, 'name', ctx);
         if (!password) return R.error(2, 'password', ctx);
         // 进行数据库查询
         const result = await SWS.checklogin(name, password);
-        // console.log('result: ', result);
         // 检查查询结果
         if (result) {
             let token = Tools.setToken(8);
@@ -54,7 +52,6 @@ const ServiceWorkerController = {
             loginType: loginType
         }
         let result = await SWS.getMyCustomer(obj);
-        // console.log(result);
         if (result) {
             R.success(result, ctx);
         } else {
@@ -86,7 +83,6 @@ const ServiceWorkerController = {
     // 通过id获取用户信息
     getCustomerById: async (ctx) => {
         const cid = ctx.query.cid;
-        console.log('cid: ',cid);
         let result = await SWS.getCustomerById(cid);
         if (result) {
             R.success(result, ctx);
@@ -115,7 +111,6 @@ const ServiceWorkerController = {
     },
     getCustomerByName: async (ctx) => {
         const {name} = ctx.query;
-        // console.log(name)
         let result = await SWS.getCustomerByName(name);
         if (result) {
             R.success(result, ctx);

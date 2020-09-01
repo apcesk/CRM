@@ -31,7 +31,6 @@ const ServiceWorkerModel = {
             }
         }
         if (loginType && loginType == 1) {
-            // console.log("loginType: ", loginType)
             _sql = `select c.cid as 'key', c.name, c.wechat, c.phone_number as phone, c.date_first_reg, c.remarks, c.address, c.last_review_date
             from Customer c`;
             inserts = [];
@@ -41,11 +40,9 @@ const ServiceWorkerModel = {
         }
         const tmp = await query(_sql, inserts);
         const LEN = tmp.length;
-        // console.log("LEN: ", LEN);
         _sql+= ' order by cid desc limit ?,?';
         inserts = [...inserts, page*pagesize, pagesize];;
         
-        // console.log('inserts: \n', inserts);
         const list = await query(_sql, inserts);
         let pager = {
             page: page,
@@ -66,18 +63,14 @@ const ServiceWorkerModel = {
             _sql += `update Customer set name = ?, wechat = ?, phone_number = ?, date_first_reg = ?, address = ?, service_id = ?, remarks = ?, last_review_date = ? where cid = ${obj.cid}`
             for (const key in obj) {
                 if (obj.hasOwnProperty(key) && key != 'cid') {
-                    // console.log(key);
                     inserts.push(obj[key]);
                 }
             }
-            // console.log(inserts);
             inserts.push(obj['date_first_reg']);
-            // console.log(inserts);
         } else {
             // 添加新客户之前检测该客户是否已经存在，主要判断手机号是否存在
             let checkSql = `select name from Customer where phone_number = ?`;
             const  checkSqlResult = await query(checkSql, [obj.phone_number]);
-            // console.log(checkSqlResult);
             if (checkSqlResult.length > 0) {
                 return {error: true, code: 99, message: '用户已存在'};
             }
@@ -86,11 +79,9 @@ const ServiceWorkerModel = {
                     (?, ?, ?, ?, ?, ?, ?, ?)`;
             for (const key in obj) {
                 if (obj.hasOwnProperty(key) && key != 'cid') {
-                    // console.log(key);
                     inserts.push(obj[key]);
                 }
             }
-            // console.log(inserts);
             // inserts.push(obj['date_first_reg']);
         }
 
@@ -105,7 +96,6 @@ const ServiceWorkerModel = {
     },
     // 通过id删除用户
     deleteCustomerById: async (cid) => {
-        console.log(cid);
         let inserts = [cid];
         let _sql = `delete from Customer where cid = ?`;
         await query(_sql, inserts);
