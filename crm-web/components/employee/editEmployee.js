@@ -34,9 +34,7 @@ function EditEmployee() {
   const [form] = Form.useForm();
   // 添加新职员
   const onFinish = async (values) => {
-    console.log(values);
     API.addEmployee(values).then((res) => {
-        console.log(res);
         if (res.data && res.data.code === 0) {
             form.setFieldsValue({});
             alert('操作成功');
@@ -51,11 +49,9 @@ function EditEmployee() {
   useEffect(() => {
     if (query.includes('?') && query.includes('id')){
       // 从query中获取到id值
-      // console.log('query: ', query);
       let eid = query.split('/')[2].split('=')[1];
       // 去服务器端获取数据
       API.getEmployeeById(eid).then((res) => {
-          console.log(res);
           if (res.data && res.data.datas.length > 0 && res.data.code === 0){
             const data = res.data.datas[0];
             form.setFieldsValue({
@@ -113,6 +109,7 @@ function EditEmployee() {
             >
                 <Select>
                     <Option value={1}>管理员</Option>
+                    <Option value={2}>教务</Option>
                     <Option value={0}>员工</Option>
                 </Select>
             </Form.Item>

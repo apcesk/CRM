@@ -1,4 +1,4 @@
-import { Form, Input, Button, DatePicker } from 'antd';
+import { Form, Input, Button, DatePicker,Select } from 'antd';
 import User from '../../lib/user';
 import { useRouter, Router } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -27,79 +27,58 @@ const validateMessages = {
   }
 };
 
-function EditCustomer() {
+function EditStudent() {
   const router = useRouter();
   const query = router.asPath;
   // const path = router.pathname;
   const [form] = Form.useForm();
-  const [canChangeRegTime, setCanChangeRegTime] = useState(false);
-  // 添加新客户
+  // 添加新教师
   const onFinish = async (values) => {
-    values.date_first_reg = values.date_first_reg.format('YYYY-MM-DD');
-    values.last_review_date = values.last_review_date.format('YYYY-MM-DD');
-    const userId = User.getLoginId();
-    values.service_id = parseInt(userId);
-    // 将修改的客户id传过去
+    // 将修改的老师id传过去
     if (query.includes('?') && query.includes('id')){
       // 从query中获取到id值
-      let cid = query.split('/')[2].split('=')[1];
-      values.cid = cid;
+      let tid = query.split('/')[2].split('=')[1];
+      values.tid = tid;
     }
     // 将表单数据添加到数据库
-    API.addCustomer(values).then((res) => {
+    API.addTeacher(values).then((res) => {
       if(res.data.datas.code === 99) {
         alert(res.data.datas.message); 
       } else {
         // 操作成功
         alert('操作成功')
-        // form.setFieldsValue({});
         form.resetFields();
-        // Router.push('/index/mycustomer');
       }
     }).catch((e) => {
       alert(e);
     });
   };
-  // 编辑客户
+  // 编辑教师
   useEffect(() => {
-    setCanChangeRegTime(User.getLoginType() == 1)
     if (query.includes('?') && query.includes('id')){
       // 从query中获取到id值
-      let cid = query.split('/')[2].split('=')[1];
+      let tid = query.split('/')[2].split('=')[1];
       // 去服务器端获取数据
-      API.getCustomerById(cid).then((res) => {
-        const customer = res.data.datas[0];
-        const { name, wechat, phone_number, address, date_first_reg, remarks, last_review_date} = customer;
-        let date_first_reg1 = moment(date_first_reg);
-        let last_review_date1 = moment(last_review_date);
+      API.getTeacherById(tid).then((res) => {
+        const teacher = res.data.datas[0];
+        const { name, phone_number} = teacher;
+
         form.setFieldsValue({
           name,
-          wechat,
-          phone_number,
-          address,
-          date_first_reg: date_first_reg1,
-          remarks,
-          last_review_date: last_review_date1
+          phone_number
         })
       }).catch(e => {
         alert(e);
       })
-    } else {
-      form.setFieldsValue({
-        date_first_reg: moment(new Date())
-      })
     }
   }, []);
-  const disabledDate = (current) => {
-    return current < moment().startOf('day');
-  }
 
   
   return (
       <React.Fragment>
         <Form 
           {...layout} 
-          name="customer" 
+          name="student" 
           onFinish={onFinish} 
           validateMessages={validateMessages} 
           style={{paddingTop: '5%', paddingRight:'5%'}}
@@ -116,16 +95,6 @@ function EditCustomer() {
                 ]}
             >
                 <Input placeholder={"必填项"}/>
-            </Form.Item>
-            {/* 微信号 */}
-            <Form.Item
-                name={'wechat'}
-                label="WeChat"
-                rules={[
-                  {required:true}
-                ]}
-            >
-                <Input placeholder={"没有请填null"}/>
             </Form.Item>
             {/* 手机号 */}
             <Form.Item
@@ -144,28 +113,6 @@ function EditCustomer() {
             >
                 <Input placeholder={"必填项"}/>
             </Form.Item>
-            {/* 住址 */}
-            <Form.Item name={'address'} label="Address">
-                <Input />
-            </Form.Item>
-            {/* 创建日期 */}
-            <Form.Item name={'date_first_reg'} label="注册日期">
-              <DatePicker 
-                placeholder={"首次添加日期请选择今日"}
-                disabledDate={disabledDate}
-                disabled={!canChangeRegTime}
-              />
-            </Form.Item>
-            <Form.Item name={'last_review_date'} label="上次回访">
-              <DatePicker placeholder={"上次回访日期"}
-                disabledDate={disabledDate}
-                
-              />
-            </Form.Item>
-            {/* 备注 */}
-            <Form.Item name={ 'remarks'} label="remarks">
-              <Input.TextArea placeholder={"备注说明"}/>
-            </Form.Item>
             <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                 <Button type="primary" htmlType="submit">
                 提交
@@ -176,4 +123,4 @@ function EditCustomer() {
   );
 };
 
-export default EditCustomer;
+export default EditStudent;
