@@ -7,10 +7,8 @@ const Title = {
     employee: '添加员工',
     'employee?id': '编辑员工',
     getTitle: function(key) {
-        console.log(key);
         let title;
         Object.keys(Title).forEach(e => {
-            // console.log(e);
             if (e === key) {
                 title = Title[e];
             }

@@ -68,8 +68,51 @@ class API {
     static getCustomersByEmployeeName(req) {
         req.page = 0;
         const query = objectToQuery(req);
-        console.log(query);
         return REST.get(`employee/getCustomersByEmployeeName${query}`);
+    }
+    // 获取学生列表
+    static getStudentList(req) {
+        const query = objectToQuery(req);
+        return REST.get(`student/getStudentList${query}`);
+    }
+    // 通过教师名称获取所属学生
+    static getStudentsByTeacherName(req) {
+        const query = objectToQuery(req);
+        return REST.get(`student/getStudentsByTeacherName${query}`)
+    }
+    // 通过id删除学生
+    static deleteStudentById(sid) {
+        return REST.post(`student/deleteStudentById`, {sid: sid});
+    }
+    // 添加学生
+    static addStudent(student) {
+        return REST.post(`student/addStudent`, student);
+    }
+    // 通过id获取学生
+    static getStudentById(sid) {
+
+        return REST.get(`student/getStudentById?sid=${sid}`);
+    }
+    // 获取教师列表
+    static getTeacherList(){
+        return REST.get(`student/getTeacherList`);
+    }
+    // 获取所有的老师
+    static getTeacherListPage(req){
+        const query = objectToQuery(req);
+        return REST.get(`teacher/getTeacherListPage${query}`);
+    }
+    // 添加教师
+    static addTeacher(req){
+        return REST.post(`teacher/addTeacher`, req);
+    }
+    // 通过id获取老师信息
+    static getTeacherById(tid) {
+        return REST.get(`teacher/getTeacherById?tid=${tid}`);
+    }
+    // 通过id删除老师
+    static deleteTeacherById(tid) {
+        return REST.post(`teacher/deleteTeacherById`, {tid});
     }
 }
 
