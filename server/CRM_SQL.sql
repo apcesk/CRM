@@ -44,25 +44,25 @@ values
     (null, '拉拉', '1234567', '13745674567', '2020', '这是备注', '中华街23号', 1, 2, '2020');
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '李四', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, null);
+    (null, '李四', '1234567', '13245674567', '2020-09-02', '这是备注', '中华街23号', 1, 1, '2020-09-02');
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '王五', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, null);
+    (null, '王五', '1234567', '13245674567', '2020-09-02', '这是备注', '中华街23号', 1, 1, '2020-09-02');
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '赵六', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 1, null);
+    (null, '赵六', '1234567', '13245674567', '2020-09-02', '这是备注', '中华街23号', 1, 1, '2020-09-02');
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '张', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, null);
+    (null, '张', '1234567', '13245674567', '2020-09-02', '这是备注', '中华街23号', 1, 2, '2020-09-02');
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '李', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, null);
+    (null, '李', '1234567', '13245674567', '2020-09-02', '这是备注', '中华街23号', 1, 2, '2020-09-02');
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '王', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, null);
+    (null, '王', '1234567', '13245674567', '2020-09-02', '这是备注', '中华街23号', 1, 2, '2020-09-02');
 insert into `Customer` (`cid`, `name`, `wechat`, `phone_number`, `last_review_date`, `remarks`, `address`, `state`, `service_id`, `date_first_reg`)
 values
-    (null, '赵', '1234567', '13245674567', null, '这是备注', '中华街23号', 1, 2, null);
+    (null, '赵', '1234567', '13245674567', '2020-09-02', '这是备注', '中华街23号', 1, 2, '2020-09-02');
 
 
 # 教师表
@@ -75,11 +75,11 @@ create table `Teacher`(
     `other_3` varchar(255) default null #留空备用
 );
 INSERT INTO Teacher (`tid`, `name`, `phone_number`)
-VALUES (1, 'teacher1', '123456789');
+VALUES (1, 'teacher1', '1234567890');
 INSERT INTO Teacher (`tid`, `name`, `phone_number`)
-VALUES (2, 'teacher2', '123456789');
+VALUES (2, 'teacher2', '1234567891');
 INSERT INTO Teacher (`tid`, `name`, `phone_number`)
-VALUES (3, 'teacher3', '123456789');
+VALUES (3, 'teacher3', '1234567892');
 # 学生表
 create table `Student`(
     `sid` int primary key not null auto_increment, # id值
