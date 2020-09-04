@@ -16,6 +16,7 @@ const ServiceWorkerController = {
         const result = await SWS.checklogin(name, password);
         // 检查查询结果
         if (result) {
+            console.log(ctx.session);
             let token = Tools.setToken(8);
             // 保存token
             ctx.session.token = token;
@@ -25,6 +26,7 @@ const ServiceWorkerController = {
             ctx.session.id = result.cid;
             // 保存用户权利
             ctx.session.login_type = result.power;
+            // console.log(ctx.session)
             R.success({
                 token: token,
                 login_type: result.power,
@@ -60,7 +62,7 @@ const ServiceWorkerController = {
     },
     // 添加新的客户/ 修改客户
     addCustomer: async (ctx) => {
-        let {name, wechat, phone_number, last_review_date, address, service_id, remarks, cid, date_first_reg} = ctx.request.body;
+        let {name, wechat, phone_number, last_review_date, address, service_id, remarks, cid, date_first_reg, state} = ctx.request.body;
         let obj = {
             name:name, 
             wechat:wechat, 
@@ -70,7 +72,8 @@ const ServiceWorkerController = {
             service_id:service_id, 
             remarks:remarks,
             cid: cid,
-            date_first_reg: date_first_reg
+            date_first_reg: date_first_reg,
+            state: parseInt(state)
         };
         let result = await SWS.addCustomer(obj);
         if (result) {
