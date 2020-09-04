@@ -1,9 +1,10 @@
-import { Form, Input, Button, DatePicker } from 'antd';
+import { Form, Input, Button, DatePicker, Select } from 'antd';
 import User from '../../lib/user';
 import { useRouter, Router } from 'next/router';
 import { useEffect, useState } from 'react';
 import API from '../../lib/API';
 import moment from 'moment';
+const {Option} = Select;
 const layout = {
   labelCol: {
     span: 4,
@@ -45,6 +46,7 @@ function EditCustomer() {
       let cid = query.split('/')[2].split('=')[1];
       values.cid = cid;
     }
+    console.log(values);
     // 将表单数据添加到数据库
     API.addCustomer(values).then((res) => {
       if(res.data.datas.code === 99) {
@@ -69,7 +71,7 @@ function EditCustomer() {
       // 去服务器端获取数据
       API.getCustomerById(cid).then((res) => {
         const customer = res.data.datas[0];
-        const { name, wechat, phone_number, address, date_first_reg, remarks, last_review_date} = customer;
+        const { name, wechat, phone_number, address, date_first_reg, remarks, last_review_date, state} = customer;
         let date_first_reg1 = moment(date_first_reg);
         let last_review_date1 = moment(last_review_date);
         form.setFieldsValue({
@@ -79,7 +81,8 @@ function EditCustomer() {
           address,
           date_first_reg: date_first_reg1,
           remarks,
-          last_review_date: last_review_date1
+          last_review_date: last_review_date1,
+          state : state == 0 ? '未跟进' : state == 1 ? '跟进中' : '无意向'
         })
       }).catch(e => {
         alert(e);
@@ -147,6 +150,17 @@ function EditCustomer() {
             {/* 住址 */}
             <Form.Item name={'address'} label="Address">
                 <Input />
+            </Form.Item>
+            {/* 状态 */}
+            <Form.Item name={'state'} label="跟进状态">
+            <Select
+              style={{ width: 200 }}
+              placeholder="Select a state"
+            >
+              <Option value="0">未跟进</Option>
+              <Option value="1">跟进中</Option>
+              <Option value="2">无意向</Option>
+            </Select>
             </Form.Item>
             {/* 创建日期 */}
             <Form.Item name={'date_first_reg'} label="注册日期">

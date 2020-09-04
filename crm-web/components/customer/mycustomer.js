@@ -38,6 +38,16 @@ function MyCustomer(){
             title: 'Join Date',
             dataIndex: 'date_first_reg',
         },
+        {// 状态
+            title: 'State',
+            dataIndex: 'state',
+            render: value => {
+                return (<Button 
+                    disabled={value == 2}
+                    type={value == 0 ? 'primary' : (value == 1 ? 'danger' : 'default')}
+                >{value == 0 ? '未跟进' : value == 1 ? '跟进中' : '无意向'}</Button>)
+            },
+        },
         {
             title: '备注',
             dataIndex: 'remarks',
@@ -72,6 +82,7 @@ function MyCustomer(){
         setLoading(true);
         API.getMyCustomer({pagesize: pagination.pageSize, page: pagination.current-1, id: User.getLoginId(), kw:searchValue, loginType: User.getLoginType()})
             .then((res) => {
+                console.log(res);
                 if(res.data.code === 0 && res.data.datas){
                     setData(res.data.datas);
                     let data = [];
@@ -83,7 +94,7 @@ function MyCustomer(){
                             <div>
                                 {/* 编辑按钮 */}
                                 <Button type="primary" shape="round" size="small">
-                                    <Link href={`/index/add?id=${e.key}`}><a>edit</a></Link>
+                                    <Link href={`/index/addCustomer?id=${e.key}`}><a>edit</a></Link>
                                 </Button>
                                 {/* 修改关系按钮 */}
                                 <Button disabled={disabled} style={{display: disabled ? 'none' : 'inline'}} href={`/index/change?id=${e.key}`} type="danger" shape="round" size="small">
@@ -134,7 +145,7 @@ function MyCustomer(){
                             <div>
                                 {/* 编辑按钮 */}
                                 <Button type="primary" shape="round" size="small">
-                                    <Link href={`/index/add?id=${e.key}`}><a>edit</a></Link>
+                                    <Link href={`/index/addCustomer?id=${e.key}`}><a>edit</a></Link>
                                 </Button>
                                 {/* 修改关系按钮 */}
                                 <Button disabled={disabled} style={{display: disabled ? 'none' : 'inline'}} href={`/index/change?id=${e.key}`} type="danger" shape="round" size="small">
