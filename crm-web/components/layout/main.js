@@ -63,7 +63,7 @@ function MainLayout(props) {
               </SubMenu>
             </Menu>
           </Sider>
-          <Content style={{height:'80vh', maxHeight:'80vh', backgroundColor:'#fff'}}>
+          <Content style={{ backgroundColor:'#fff', height: "auto"}}>
             <React.Fragment>
               {props.Div}
             </React.Fragment>

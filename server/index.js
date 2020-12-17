@@ -16,4 +16,5 @@ app.use(Routes.routes()).use(Routes.allowedMethods());
 // 启动服务
 app.listen(Config.port, () => {
     console.log('启动成功' + Config.port);
+    console.log(`当前允许跨域的是 ${Config.originUrl}`)
 })
