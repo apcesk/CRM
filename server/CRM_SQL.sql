@@ -1,6 +1,6 @@
 # 数据库文件
 drop database if exists CRM;
-create database CRM charset="utf-8";
+create database CRM charset="utf8";
 use CRM;
 
 # 工作人员表

@@ -1,6 +1,6 @@
 import REST from './Rest';
 import User from './user';
-import ROuter from 'next/router';
+import Router from 'next/router';
 
 // 把对象变成查询字符串
 const objectToQuery = (param) => {
