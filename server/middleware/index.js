@@ -34,15 +34,16 @@ const initMid = (app) => {
     // 使用session
     app.keys = ['secret'];
     const CONFIG = {
-        key: 'koa:sess',   //cookie key (default is koa:sess)
-        maxAge: 1000*60*60,  // cookie的过期时间 
+        key: 'koa.sess',   //cookie key (default is koa:sess)
+        maxAge: 1000*60*60*8,  // cookie的过期时间 
         overwrite: true,  //是否可以overwrite    (默认default true)
         httpOnly: true, //cookie是否只有服务器端可以访问 httpOnly or not (default true)
         signed: true,   //签名默认true
         rolling: false,  //在每次请求时强行设置cookie，这将重置cookie过期时间（默认：false）
         renew: false,  //(boolean) renew session when session is nearly expired,
+        // secure: true, /** (boolean) secure cookie*/
         sameSite: false,
-        };
+    };
     app.use(session(CONFIG, app));
 
     // 登录检查

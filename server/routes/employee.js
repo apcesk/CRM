@@ -10,6 +10,7 @@ const Employee = {
         {methods: 'post', path:'/addEmployee', realize: EMP.addEmployee}, // 添加客服
         {methods: 'get', path:'/getEmployeeById', realize: EMP.getEmployeeById}, // 客服人员的登录
         {methods: 'post', path:'/deleteEmployeeById', realize: EMP.deleteEmployeeById}, // 客服人员的登录
+        {methods: 'get', path:'/getCustomersByEmployeeName', realize: EMP.getCustomersByEmployeeName}, // 通过客服的name查询其客户
     ]
 }
 

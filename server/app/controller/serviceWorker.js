@@ -9,15 +9,14 @@ const ServiceWorkerController = {
         let name = ctx.request.body.username;
         // 获取密码
         let password = ctx.request.body.password;
-        // console.log('name: ', name, '\npassword: ', password)
         // 检查是否正确的输入了name 和 password
         if (!name) return R.error(2, 'name', ctx);
         if (!password) return R.error(2, 'password', ctx);
         // 进行数据库查询
         const result = await SWS.checklogin(name, password);
-        // console.log('result: ', result);
         // 检查查询结果
         if (result) {
+            console.log(ctx.session);
             let token = Tools.setToken(8);
             // 保存token
             ctx.session.token = token;
@@ -27,6 +26,7 @@ const ServiceWorkerController = {
             ctx.session.id = result.cid;
             // 保存用户权利
             ctx.session.login_type = result.power;
+            // console.log(ctx.session)
             R.success({
                 token: token,
                 login_type: result.power,
@@ -39,7 +39,6 @@ const ServiceWorkerController = {
         }
     },
     getMyCustomer: async (ctx) => {
-        // console.log("controller: \n",ctx)
         // 获取分页查询的数据
         const pager = Kit.getPage(ctx);
 
@@ -55,7 +54,6 @@ const ServiceWorkerController = {
             loginType: loginType
         }
         let result = await SWS.getMyCustomer(obj);
-        // console.log(result);
         if (result) {
             R.success(result, ctx);
         } else {
@@ -64,7 +62,7 @@ const ServiceWorkerController = {
     },
     // 添加新的客户/ 修改客户
     addCustomer: async (ctx) => {
-        let {name, wechat, phone_number, last_review_date, address, service_id, remarks, cid, date_first_reg} = ctx.request.body;
+        let {name, wechat, phone_number, last_review_date, address, service_id, remarks, cid, date_first_reg, state} = ctx.request.body;
         let obj = {
             name:name, 
             wechat:wechat, 
@@ -74,7 +72,8 @@ const ServiceWorkerController = {
             service_id:service_id, 
             remarks:remarks,
             cid: cid,
-            date_first_reg: date_first_reg
+            date_first_reg: date_first_reg,
+            state: parseInt(state)
         };
         let result = await SWS.addCustomer(obj);
         if (result) {
@@ -87,7 +86,6 @@ const ServiceWorkerController = {
     // 通过id获取用户信息
     getCustomerById: async (ctx) => {
         const cid = ctx.query.cid;
-        console.log('cid: ',cid);
         let result = await SWS.getCustomerById(cid);
         if (result) {
             R.success(result, ctx);
@@ -116,7 +114,6 @@ const ServiceWorkerController = {
     },
     getCustomerByName: async (ctx) => {
         const {name} = ctx.query;
-        // console.log(name)
         let result = await SWS.getCustomerByName(name);
         if (result) {
             R.success(result, ctx);

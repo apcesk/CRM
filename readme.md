@@ -1,3 +1,7 @@
+# 本项目用到的技术栈如下
+         前端: react,hooks, antd V4+, axios, nextJS
+         后端: nodeJS, koa2, mysql,
+         PS: 看到这里点个✨吧
 ### 开发文档
    - 1 系统架构
       - 分为两种身份

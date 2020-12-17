@@ -40,26 +40,20 @@ function EditCustomer() {
   const [selectValue, setSelectValue] = useState('');
   // 修改客户关系，传入eid和cid即可
   const onFinish = async (values) => {
-    console.log(values);
     // 通过ename查找到employee的eid，
     API.changeRelationship(values).then(res => {
-      console.log(res);
+
     }).catch(e => {
       alert(e);
     })
   };
   // 通过id查询客户关系
   const fetchRelationShipData = () => {
-    
-    // console.log(query);
     let cid = parseInt(query.split('/')[2].split('=')[1]);
     
-    // console.log(query.split('/')[2].split('=')[1]);
     // 通过cid获取客户的name
     API.getCustomerRelationShipeById(cid).then((res) => {
-        // console.log(res);
         let data = res.data.datas[0];
-        console.log(data);
         form.setFieldsValue({
             eid: data.eid,
             cname: data.cname,
@@ -71,9 +65,7 @@ function EditCustomer() {
   };
   // 通过名字搜索指定的客户
   const onSearch = (value) => {
-    // console.log(value);
     API.getCustomerByName(value).then((res) => {
-      console.log(res);
       if (res.data.datas.length > 0 && res.data.code === 0) {
         form.setFieldsValue({
           cid: res.data.datas[0].cid,
@@ -91,15 +83,13 @@ function EditCustomer() {
   // 获取客服列表
   const getEmployeeList = () => {
       API.getEmployeeList().then((res) => {
-          console.log(res)
           let data = res.data.datas;
           let tmpEmployee = [];
           if (res.data && res.data.code === 0) {
             data.forEach(e => {
-              tmpEmployee.push({'label': e.ename, 'value': e.eid});
+              tmpEmployee.push({'label': e.name, 'value': e.key});
             });
           };
-          console.log(tmpEmployee);
           setEmployees(tmpEmployee);
       }).catch(e => {
           alert(e);

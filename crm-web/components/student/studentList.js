@@ -1,4 +1,4 @@
-// 查看自己的客户列表
+// 查看学生列表
 
 import { Table, Button, Popconfirm } from 'antd';
 import React, { useState, useEffect } from 'react';
@@ -8,7 +8,7 @@ import Router from 'next/router';
 import SearchBar from '../searchbar';
 import Link from 'next/link';
 // ReactDOM.render(<Table columns={columns} dataSource={data} onChange={onChange} />, mountNode);
-function MyCustomer(){
+function StudentList(){
     const columns = [
         {// id
             title: 'ID',
@@ -38,15 +38,10 @@ function MyCustomer(){
             title: 'Join Date',
             dataIndex: 'date_first_reg',
         },
-        {// 状态
-            title: 'State',
-            dataIndex: 'state',
-            render: value => {
-                return (<Button 
-                    disabled={value == 2}
-                    type={value == 0 ? 'primary' : (value == 1 ? 'danger' : 'default')}
-                >{value == 0 ? '未跟进' : value == 1 ? '跟进中' : '无意向'}</Button>)
-            },
+        {// 所属教师
+            title: 'Teacher',
+            dataIndex: 'teacher',
+            sorter: (a, b) => b.teacher > a.teacher
         },
         {
             title: '备注',
@@ -57,7 +52,7 @@ function MyCustomer(){
             dataIndex: 'action',
         }
     ];
-    const [loginType, setLoginType] = useState(0);
+    const [loginType, setLoginType] = useState(2);
     let disabled = true;
     function onChange(pagination, filters, sorter, extra) {
         setPagination({...pagination});
@@ -69,20 +64,22 @@ function MyCustomer(){
     const [loading, setLoading] = useState(false);
     const [searchValue, setSearchValue] = useState();
     const [updateCounter, setUpdateCounter] = useState(0);
-    const deleteCustomer = (id) => {
+    const deleteStudent = (id) => {
         // 删除用户
-        API.deleteCustomerById(id).then((res) => {
+        API.deleteStudentById(id).then((res) => {
             fetchData();
         }).catch(e => {
             alert(`删除失败, Reason: ${e}`);
         })
     }
-    // 获取客户信息
+    // 获取学生信息
     const fetchData = () => {
         setLoading(true);
-        API.getMyCustomer({pagesize: pagination.pageSize, page: pagination.current-1, id: User.getLoginId(), kw:searchValue, loginType: User.getLoginType()})
+        /**
+         * @param {object} kw 指搜索关键字
+         */
+        API.getStudentList({pagesize: pagination.pageSize, page: pagination.current-1, kw:searchValue})
             .then((res) => {
-                console.log(res);
                 if(res.data.code === 0 && res.data.datas){
                     setData(res.data.datas);
                     let data = [];
@@ -94,17 +91,13 @@ function MyCustomer(){
                             <div>
                                 {/* 编辑按钮 */}
                                 <Button type="primary" shape="round" size="small">
-                                    <Link href={`/index/addCustomer?id=${e.key}`}><a>edit</a></Link>
-                                </Button>
-                                {/* 修改关系按钮 */}
-                                <Button disabled={disabled} style={{display: disabled ? 'none' : 'inline'}} href={`/index/change?id=${e.key}`} type="danger" shape="round" size="small">
-                                    change
+                                    <Link href={`/index/editStudent?id=${e.key}`}><a>edit</a></Link>
                                 </Button>
                                 {/* 删除按钮 */}
                                 <Popconfirm
                                     placement="rightBottom"
                                     title={"确认要删除？"}
-                                    onConfirm={() => deleteCustomer(e.key)}
+                                    onConfirm={() => deleteStudent(e.key)}
                                     okText="Yes"
                                     cancelText="No"
                                 >
@@ -129,10 +122,10 @@ function MyCustomer(){
                 Router.push('/login');
             });
     }
-    // 通过employee name 获取与其关联的客户
-    const fetchDataByEmployeeName = (employeeName) => {
+    // 通过teacher name 获取与其关联的客户
+    const fetchDataByTeacherName = (teacherName) => {
         setLoading(true);
-        API.getCustomersByEmployeeName({pagesize: pagination.pageSize, page: 0, employeeName: employeeName})
+        API.getStudentsByTeacherName({pagesize: pagination.pageSize, page: 0, teacherName: teacherName})
             .then((res) => {
                 if(res.data.code === 0 && res.data.datas && res.data.datas.error != true ){
                     setData(res.data.datas);
@@ -145,17 +138,13 @@ function MyCustomer(){
                             <div>
                                 {/* 编辑按钮 */}
                                 <Button type="primary" shape="round" size="small">
-                                    <Link href={`/index/addCustomer?id=${e.key}`}><a>edit</a></Link>
-                                </Button>
-                                {/* 修改关系按钮 */}
-                                <Button disabled={disabled} style={{display: disabled ? 'none' : 'inline'}} href={`/index/change?id=${e.key}`} type="danger" shape="round" size="small">
-                                    change
+                                    <Link href={`/index/editStudent?id=${e.key}`}><a>edit</a></Link>
                                 </Button>
                                 {/* 删除按钮 */}
                                 <Popconfirm
                                     placement="rightBottom"
                                     title={"确认要删除？"}
-                                    onConfirm={() => deleteCustomer(e.key)}
+                                    onConfirm={() => deleteStudent(e.key)}
                                     okText="Yes"
                                     cancelText="No"
                                 >
@@ -177,7 +166,7 @@ function MyCustomer(){
                         showSizeChanger: true
                     });
                 } else {
-                    alert(res.data.datas.msg);
+                    alert(res.data.msg);
                 }
                 setLoading(false);
             }).catch(e => {
@@ -193,10 +182,9 @@ function MyCustomer(){
     useEffect(() => {
         fetchData();
     },[searchValue, updateCounter]);
-    // 通过搜索employee名来筛选客户
+    // 通过搜索teacher名字来筛选学生
     const onEmployeeNameSearch = async (value) => {
-        
-        fetchDataByEmployeeName(value);
+        fetchDataByTeacherName(value);
     }
     // 搜索功能，通过name筛选客户
     function onSearch(value){
@@ -209,13 +197,13 @@ function MyCustomer(){
                     style={{display: 'flex'}}
                 >
                     <SearchBar 
-                        placeHolder="Serarch By Customer Name"
+                        placeHolder="Serarch By Student Name"
                         onSearch={onSearch}
                     />
                     {
                         loginType && 
                         <SearchBar
-                            placeHolder="Search By Employee Name"
+                            placeHolder="Search By Teacher Name"
                             onSearch={onEmployeeNameSearch}
                         />
                     }
@@ -234,4 +222,4 @@ function MyCustomer(){
     )
 }
 
-export default MyCustomer;
+export default StudentList;

@@ -1,10 +1,9 @@
-import { Form, Input, Button, DatePicker, Select } from 'antd';
+import { Form, Input, Button, DatePicker,Select } from 'antd';
 import User from '../../lib/user';
 import { useRouter, Router } from 'next/router';
 import { useEffect, useState } from 'react';
 import API from '../../lib/API';
 import moment from 'moment';
-const {Option} = Select;
 const layout = {
   labelCol: {
     span: 4,
@@ -28,27 +27,27 @@ const validateMessages = {
   }
 };
 
-function EditCustomer() {
+function EditStudent() {
   const router = useRouter();
   const query = router.asPath;
   // const path = router.pathname;
   const [form] = Form.useForm();
   const [canChangeRegTime, setCanChangeRegTime] = useState(false);
+  // 用来获取老师列表
+  const [teachers, setTeachers] = useState([]);
+  const [selectValue, setSelectValue] = useState('');
   // 添加新客户
   const onFinish = async (values) => {
     values.date_first_reg = values.date_first_reg.format('YYYY-MM-DD');
     values.last_review_date = values.last_review_date.format('YYYY-MM-DD');
-    const userId = User.getLoginId();
-    values.service_id = parseInt(userId);
-    // 将修改的客户id传过去
+    // 将修改的学生id传过去
     if (query.includes('?') && query.includes('id')){
       // 从query中获取到id值
-      let cid = query.split('/')[2].split('=')[1];
-      values.cid = cid;
+      let sid = query.split('/')[2].split('=')[1];
+      values.sid = sid;
     }
-    console.log(values);
     // 将表单数据添加到数据库
-    API.addCustomer(values).then((res) => {
+    API.addStudent(values).then((res) => {
       if(res.data.datas.code === 99) {
         alert(res.data.datas.message); 
       } else {
@@ -56,22 +55,38 @@ function EditCustomer() {
         alert('操作成功')
         // form.setFieldsValue({});
         form.resetFields();
-        // Router.push('/index/mycustomer');
+        // Router.push('/index/studentList');
       }
     }).catch((e) => {
       alert(e);
     });
   };
-  // 编辑客户
+  // 获取教师列表
+  const getTeacherList = () => {
+    API.getTeacherList().then((res) => {
+        let data = res.data.datas;
+        let tmpTeachers = [];
+        if (res.data && res.data.code === 0) {
+          data.forEach(e => {
+            tmpTeachers.push({'label': e.name, 'value': e.key});
+          });
+        };
+        setTeachers(tmpTeachers);
+    }).catch(e => {
+        alert(e);
+    })
+}
+  // 编辑学生
   useEffect(() => {
+    getTeacherList();
     setCanChangeRegTime(User.getLoginType() == 1)
     if (query.includes('?') && query.includes('id')){
       // 从query中获取到id值
-      let cid = query.split('/')[2].split('=')[1];
+      let sid = query.split('/')[2].split('=')[1];
       // 去服务器端获取数据
-      API.getCustomerById(cid).then((res) => {
-        const customer = res.data.datas[0];
-        const { name, wechat, phone_number, address, date_first_reg, remarks, last_review_date, state} = customer;
+      API.getStudentById(sid).then((res) => {
+        const student = res.data.datas[0];
+        const { name, wechat, phone_number, address, date_first_reg, remarks, last_review_date, teacher} = student;
         let date_first_reg1 = moment(date_first_reg);
         let last_review_date1 = moment(last_review_date);
         form.setFieldsValue({
@@ -82,7 +97,7 @@ function EditCustomer() {
           date_first_reg: date_first_reg1,
           remarks,
           last_review_date: last_review_date1,
-          state : state == 0 ? '未跟进' : state == 1 ? '跟进中' : '无意向'
+          teacher
         })
       }).catch(e => {
         alert(e);
@@ -102,7 +117,7 @@ function EditCustomer() {
       <React.Fragment>
         <Form 
           {...layout} 
-          name="customer" 
+          name="student" 
           onFinish={onFinish} 
           validateMessages={validateMessages} 
           style={{paddingTop: '5%', paddingRight:'5%'}}
@@ -151,16 +166,21 @@ function EditCustomer() {
             <Form.Item name={'address'} label="Address">
                 <Input />
             </Form.Item>
-            {/* 状态 */}
-            <Form.Item name={'state'} label="跟进状态">
-            <Select
-              style={{ width: 200 }}
-              placeholder="Select a state"
-            >
-              <Option value="0">未跟进</Option>
-              <Option value="1">跟进中</Option>
-              <Option value="2">无意向</Option>
-            </Select>
+            {/* 所属教师 */}
+            <Form.Item name={'teacher'} label="所属教师">
+                <Select
+                    showSearch
+                    style={{ width: 200 }}
+                    placeholder="Select a teacher"
+                    optionFilterProp="children"
+                    options={teachers}
+                    value={selectValue}
+                    filterOption={(input, option) =>{
+                      // option 指代所有的选项
+                        return option.label.indexOf(input.toLowerCase()) >= 0;
+                      } 
+                    }
+                />
             </Form.Item>
             {/* 创建日期 */}
             <Form.Item name={'date_first_reg'} label="注册日期">
@@ -171,7 +191,7 @@ function EditCustomer() {
               />
             </Form.Item>
             <Form.Item name={'last_review_date'} label="上次回访">
-              <DatePicker placeholder={"上次回访日期"}
+              <DatePicker placeholder={"上次学习日期"}
                 disabledDate={disabledDate}
                 
               />
@@ -190,4 +210,4 @@ function EditCustomer() {
   );
 };
 
-export default EditCustomer;
+export default EditStudent;

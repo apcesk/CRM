@@ -20,7 +20,7 @@ const ServiceWorkerModel = {
     // 获取和查询
     getMyCustomer: async ({page, pagesize, id, kw, loginType}) => {
         let _sql = `select c.cid as 'key', c.name, c.wechat, c.phone_number as phone, c.date_first_reg, c.remarks, c.address, c.last_review_date
-                    from Customer c`;
+                    , c.state from Customer c`;
         let inserts = [];
         
         if (id){
@@ -31,9 +31,8 @@ const ServiceWorkerModel = {
             }
         }
         if (loginType && loginType == 1) {
-            // console.log("loginType: ", loginType)
             _sql = `select c.cid as 'key', c.name, c.wechat, c.phone_number as phone, c.date_first_reg, c.remarks, c.address, c.last_review_date
-            from Customer c`;
+            , c.state from Customer c`;
             inserts = [];
             if (kw && kw != 'undefined'){
                 _sql += " where c.name like '%"+ kw + "%'";
@@ -41,11 +40,9 @@ const ServiceWorkerModel = {
         }
         const tmp = await query(_sql, inserts);
         const LEN = tmp.length;
-        // console.log("LEN: ", LEN);
-        _sql+= ' limit ?,?';
+        _sql+= ' order by cid desc limit ?,?';
         inserts = [...inserts, page*pagesize, pagesize];;
         
-        // console.log('inserts: \n', inserts);
         const list = await query(_sql, inserts);
         let pager = {
             page: page,
@@ -60,37 +57,32 @@ const ServiceWorkerModel = {
         // 向数据库中添加数据
         obj.wechat = obj.wechat === 'null' ? '无' : obj.wechat;
         let _sql = '';
-        let inserts = []
+        let inserts = [];
         if (obj.cid){
+            console.log(obj);
             // 编辑客户
-            _sql += `update Customer set name = ?, wechat = ?, phone_number = ?, date_first_reg = ?, address = ?, service_id = ?, remarks = ?, last_review_date = ? where cid = ${obj.cid}`
+            _sql += `update Customer set name = ?, wechat = ?, phone_number = ?, date_first_reg = ?, address = ?, service_id = ?, remarks = ?, last_review_date = ?, state = ? where cid = ${obj.cid}`
             for (const key in obj) {
                 if (obj.hasOwnProperty(key) && key != 'cid') {
-                    // console.log(key);
                     inserts.push(obj[key]);
                 }
             }
-            // console.log(inserts);
-            inserts.push(obj['date_first_reg']);
-            // console.log(inserts);
+            // inserts.push(obj['date_first_reg']);
         } else {
             // 添加新客户之前检测该客户是否已经存在，主要判断手机号是否存在
             let checkSql = `select name from Customer where phone_number = ?`;
             const  checkSqlResult = await query(checkSql, [obj.phone_number]);
-            // console.log(checkSqlResult);
             if (checkSqlResult.length > 0) {
                 return {error: true, code: 99, message: '用户已存在'};
             }
             // 添加新客户
-            _sql = `insert into Customer (name, wechat, phone_number, date_first_reg, address, service_id, remarks, last_review_date) values
-                    (?, ?, ?, ?, ?, ?, ?, ?)`;
+            _sql = `insert into Customer (name, wechat, phone_number, date_first_reg, address, service_id, remarks, last_review_date, state) values
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
             for (const key in obj) {
                 if (obj.hasOwnProperty(key) && key != 'cid') {
-                    // console.log(key);
                     inserts.push(obj[key]);
                 }
             }
-            // console.log(inserts);
             // inserts.push(obj['date_first_reg']);
         }
 
@@ -99,13 +91,12 @@ const ServiceWorkerModel = {
     },
     // 通过id查询客户
     getCustomerById: async (cid) => {
-        let _sql = `select name, wechat, phone_number, address, date_first_reg, remarks, last_review_date from Customer where cid = ?`;
+        let _sql = `select name, wechat, phone_number, address, date_first_reg, remarks, last_review_date, state from Customer where cid = ?`;
         let inserts = [parseInt(cid)];
         return await query(_sql, inserts);
     },
     // 通过id删除用户
     deleteCustomerById: async (cid) => {
-        console.log(cid);
         let inserts = [cid];
         let _sql = `delete from Customer where cid = ?`;
         await query(_sql, inserts);

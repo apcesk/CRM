@@ -11,13 +11,10 @@ function AppBreadcrumb() {
     const path = router.asPath;
 
     useEffect(() => {
-        // console.log('path: ', path);
         let secondaryPath = path.split('/')[2];
         let breadcrumbName = [];
         breadcrumbName.push(BreadTitle.getTitle(secondaryPath));
         setBreadcrumbName(breadcrumbName);
-        
-        // console.log(breadcrumbName);
 
     },[]);
 

@@ -8,6 +8,8 @@ import User from '../../lib/user';
 function MainLayout(props) {
   //
   const [ADD_CAN_VISIBLE, SET_ADD_CAN_VISIBLE] = useState(false);
+  const [STU_LIST_VISIBLE, SET_STU_LIST_VISIBLE] = useState(false);
+  const [CUS_CAN_VISIBLE, SET_CUS_CAN_VISIBLE] = useState(false);
   const { SubMenu } = Menu;
   const { Header, Content, Footer, Sider } = Layout;
   const [openKeys, setOpenKeys] = useState(['index']);
@@ -21,10 +23,11 @@ function MainLayout(props) {
     setOpenKeys(openKeys);
   }
   useEffect(() => {
-    SET_ADD_CAN_VISIBLE(User.getLoginType() == 1)
+    SET_ADD_CAN_VISIBLE(User.getLoginType() == 1);
+    SET_STU_LIST_VISIBLE(User.getLoginType() == 1 || User.getLoginType() == 2);
+    SET_CUS_CAN_VISIBLE(User.getLoginType() == 0 || User.getLoginType() == 1);
     const OPEN_KEY = path.split('/')[1];
     const SELECT_KEY = path.split('/')[2];
-    console.log(SELECT_KEY);
     setOpenKeys(OPEN_KEY)
     setSelectKeys(SELECT_KEY);
     setAddOrEdit(asPath.includes('add?id=') ? "编辑" : '添加');
@@ -49,10 +52,14 @@ function MainLayout(props) {
               onOpenChange={onOpenChange}
             >
               <SubMenu key="index" icon={<UserOutlined />} title="客户管理">
-                <Menu.Item key="mycustomer"><Link href="/index/mycustomer"><a>我的客户</a></Link></Menu.Item>
-                <Menu.Item key="add" style={!ADD_CAN_VISIBLE ? {display:'none'} : {}}><Link href="/index/add"><a>{AddOrEdit}客户</a></Link></Menu.Item>
+                <Menu.Item key="mycustomer" style={!CUS_CAN_VISIBLE ? {display:'none'} : {}}><Link href="/index/mycustomer"><a>我的客户</a></Link></Menu.Item>
+                <Menu.Item key="addCustomer" style={!CUS_CAN_VISIBLE ? {display:'none'} : {}}><Link href="/index/addCustomer"><a>{AddOrEdit}客户</a></Link></Menu.Item>
                 <Menu.Item key="employee" style={!ADD_CAN_VISIBLE ? {display:'none'} : {}}><Link href="/index/employee"><a>{AddOrEditEmployee}职员</a></Link></Menu.Item>
                 <Menu.Item key="empList" style={!ADD_CAN_VISIBLE ? {display:'none'} : {}}><Link href="/index/empList"><a>职员列表</a></Link></Menu.Item>
+                <Menu.Item key="studentList" style={!STU_LIST_VISIBLE ? {display:'none'} : {}}><Link href="/index/studentList"><a>学生列表</a></Link></Menu.Item>
+                <Menu.Item key="editStudent" style={!STU_LIST_VISIBLE ? {display:'none'} : {}}><Link href="/index/editStudent"><a>添加学生</a></Link></Menu.Item>
+                <Menu.Item key="teacherList" style={!ADD_CAN_VISIBLE ? {display:'none'} : {}}><Link href="/index/teacherList"><a>教师列表</a></Link></Menu.Item>
+                <Menu.Item key="addTeacher" style={!ADD_CAN_VISIBLE ? {display:'none'} : {}}><Link href="/index/addTeacher"><a>添加教师</a></Link></Menu.Item>
               </SubMenu>
             </Menu>
           </Sider>

@@ -1,4 +1,4 @@
-// 查看员工列表
+// 查看学生列表
 
 import { Table, Button, Popconfirm } from 'antd';
 import React, { useState, useEffect } from 'react';
@@ -7,8 +7,7 @@ import User from '../../lib/user';
 import Router from 'next/router';
 import SearchBar from '../searchbar';
 import Link from 'next/link';
-// ReactDOM.render(<Table columns={columns} dataSource={data} onChange={onChange} />, mountNode);
-function EmployeeList(){
+function TeacherList(){
     const columns = [
         {// id
             title: 'ID',
@@ -18,12 +17,16 @@ function EmployeeList(){
             title: 'Name',
             dataIndex: 'name',
         },
+        {// 手机号
+            title: 'Phone',
+            dataIndex: 'phone_number'
+        },
         {
             title: '操作',
             dataIndex: 'action',
         }
     ];
-
+    const [loginType, setLoginType] = useState(2);
     let disabled = true;
     function onChange(pagination, filters, sorter, extra) {
         setPagination({...pagination});
@@ -35,17 +38,21 @@ function EmployeeList(){
     const [loading, setLoading] = useState(false);
     const [searchValue, setSearchValue] = useState();
     const [updateCounter, setUpdateCounter] = useState(0);
-    const deleteEmployee = (id) => {
+    const deleteTeacher = (id) => {
         // 删除用户
-        API.deleteEmployeeById(id).then((res) => {
+        API.deleteTeacherById(id).then((res) => {
             fetchData();
         }).catch(e => {
-            alert('删除失败')
+            alert(`删除失败, Reason: ${e}`);
         })
     }
+    // 获取所有的老师
     const fetchData = () => {
         setLoading(true);
-        API.getEmployeeList({pagesize: pagination.pageSize, page: pagination.current-1, id: User.getLoginId(), kw:searchValue, loginType: User.getLoginType()})
+        /**
+         * @param {object} kw 指搜索关键字
+         */
+        API.getTeacherListPage({pagesize: pagination.pageSize, page: pagination.current-1, kw:searchValue})
             .then((res) => {
                 if(res.data.code === 0 && res.data.datas){
                     setData(res.data.datas);
@@ -58,13 +65,13 @@ function EmployeeList(){
                             <div>
                                 {/* 编辑按钮 */}
                                 <Button type="primary" shape="round" size="small">
-                                    <Link href={`/index/employee?id=${e.key}`}><a>edit</a></Link>
+                                    <Link href={`/index/addTeacher?id=${e.key}`}><a>edit</a></Link>
                                 </Button>
                                 {/* 删除按钮 */}
                                 <Popconfirm
                                     placement="rightBottom"
                                     title={"确认要删除？"}
-                                    onConfirm={() => deleteEmployee(e.key)}
+                                    onConfirm={() => deleteTeacher(e.key)}
                                     okText="Yes"
                                     cancelText="No"
                                 >
@@ -72,8 +79,6 @@ function EmployeeList(){
                                         delete
                                     </Button>
                                 </Popconfirm>
-                                
-                                
                             </div>
                         );
                         data.push(e);
@@ -91,23 +96,29 @@ function EmployeeList(){
                 Router.push('/login');
             });
     }
-
+    // 获取登录类型
+    useEffect(() => {
+        setLoginType(User.getLoginType() == 1);
+    }, [])
     // 从服务器端获取数据
     useEffect(() => {
         fetchData();
     },[searchValue, updateCounter]);
-    
-    // 搜索功能
+    // 搜索功能，通过name筛选老师
     function onSearch(value){
         setSearchValue(value);
     }
     return (
         <React.Fragment>
-            <div style={{width:'30%'}}>
-                <SearchBar 
-                    placeHolder="serarch by name"
-                    onSearch={onSearch}
-                />
+            <div style={{width:'60%'}}>
+                <div 
+                    style={{display: 'flex'}}
+                >
+                    <SearchBar 
+                        placeHolder="Serarch By Teacher Name"
+                        onSearch={onSearch}
+                    />
+                </div>
             </div>
             <br/>
             <Table 
@@ -122,4 +133,4 @@ function EmployeeList(){
     )
 }
 
-export default EmployeeList;
+export default TeacherList;

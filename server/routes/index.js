@@ -3,6 +3,8 @@ const Router = require('koa-router');
 const Config = require('../config');
 const ServiceRouter = require('./serviceWorker');
 const EmployeeRouter = require('./employee');
+const StudentRouter = require('./student');
+const TeacherRouter = require('./teacher');
 const Routes = new Router({
     prefix: Config.prefix
 });
@@ -14,6 +16,12 @@ ServiceRouter.routes.forEach(e => {
 // 工作人员路由挂载
 EmployeeRouter.routes.forEach(e => {
     Routes[e.methods](EmployeeRouter.name + e.path, e.realize);
+});
+StudentRouter.routes.forEach(e => {
+    Routes[e.methods](StudentRouter.name + e.path, e.realize);
+});
+TeacherRouter.routes.forEach(e => {
+    Routes[e.methods](TeacherRouter.name + e.path, e.realize);
 });
 
 // Routes.get('/test', async (ctx, res) => {

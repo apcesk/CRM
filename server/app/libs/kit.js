@@ -17,7 +17,6 @@ class Kit {
     }
 
     static checkLoginTypeOk (ctx, type) {
-        console.log('login_type', ctx.session.login_type);
         if (ctx.session && ctx.session.login_type == type) {
             return true;
         } else {
