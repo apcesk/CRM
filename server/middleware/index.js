@@ -6,8 +6,8 @@ const bodyParser = require('koa-bodyparser');
 const cors = require('koa2-cors');
 const session = require('koa-session');
 const conf = require('../config/index');
-const loginCheck = require('../middleware/loginCheck')
-
+const loginCheck = require('../middleware/loginCheck');
+const static = require('koa-static');
 // 初始化所有中间件
 const initMid = (app) => {
     
@@ -30,7 +30,8 @@ const initMid = (app) => {
 
     // 转换接收到的post参数 ctx.request.body  get 用 ctx.query 接收
     app.use(bodyParser());
-
+    // 静态文件托管
+    app.use(static(__dirname + '/../public/'))
     // 使用session
     app.keys = ['secret'];
     const CONFIG = {
@@ -47,7 +48,7 @@ const initMid = (app) => {
     app.use(session(CONFIG, app));
 
     // 登录检查
-    app.use(loginCheck)
+    // app.use(loginCheck)
     app.use(async (ctx, next) => {
         await next()
     })
