@@ -48,8 +48,10 @@ const initMid = (app) => {
     app.use(session(CONFIG, app));
 
     // 登录检查
-    // app.use(loginCheck)
+    app.use(loginCheck)
     app.use(async (ctx, next) => {
+        // 打印日志，请求的ip地址
+        console.log(`method: [${ctx.request.method}], url: [${ctx.request.url}], IP: [${ctx.request.header.host}]`)
         await next()
     })
 
